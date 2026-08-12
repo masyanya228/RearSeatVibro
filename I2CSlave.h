@@ -2,39 +2,12 @@
 #include <Wire.h>
 #include "i2c_protocol.h"
 
-/**
- * I2CSlave — класс для ESP32 в роли I2C слейва
- *
- * Использование:
- *   1. Создайте экземпляр: I2CSlave slave;
- *   2. Зарегистрируйте обработчики команд через onCommand()
- *   3. Вызовите begin() в setup()
- *   4. Вызывайте process() в каждой итерации loop()
- *
- * Пример:
- *   I2CSlave slave;
- *
- *   void setup() {
- *     slave.onCommand(REG_PING, [](const uint8_t*, uint8_t) {
- *       uint8_t resp[] = {0x01};
- *       slave.respond(resp, 1);
- *     });
- *     slave.begin();
- *   }
- *
- *   void loop() {
- *     slave.process();
- *   }
- */
-
 // Тип обработчика команды: принимает буфер запроса и его длину
 typedef void (*CommandHandler)(const uint8_t* buf, uint8_t len);
 
 class I2CSlave {
 public:
-
     // ─── Конфигурация ────────────────────────────────────────────────────────
-
     void begin(uint8_t address = SLAVE_ADDR,
                int sda = 21, int scl = 22, uint32_t clock = 100000) {
         Wire.begin((uint8_t)address);
@@ -53,7 +26,6 @@ public:
     }
 
     // ─── Вызывается из loop() ─────────────────────────────────────────────────
-
     void process() {
         if (!_hasRequest) return;
 
@@ -85,7 +57,6 @@ public:
     }
 
     // ─── Вызывается из обработчиков команд ───────────────────────────────────
-
     // Подготовить ответ (данные + CRC)
     void respond(const uint8_t* data, uint8_t len) {
         memcpy(_txBuf, data, len);
