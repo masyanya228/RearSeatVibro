@@ -2,7 +2,7 @@
 
 bool isDebug=true;
 bool isTest=false;
-unsigned long testTimer=0;
+uint32_t testTimer=0;
 
 I2CSlave slave;
 
