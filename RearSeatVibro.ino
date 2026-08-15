@@ -1,19 +1,19 @@
 #include "I2CSlave.h"
 
 bool isDebug=true;
-bool isTest=true;
+bool isTest=false;
 unsigned long testTimer=0;
 
 I2CSlave slave;
 
-#define PIN_L_IN_1  2
-#define PIN_L_IN_2  3
-#define PIN_L_IN_3  4
-#define PIN_L_IN_4  5
-#define PIN_R_IN_1  6
-#define PIN_R_IN_2  7
-#define PIN_R_IN_3  8
-#define PIN_R_IN_4  9
+#define PIN_L_IN_1  6
+#define PIN_L_IN_2  7
+#define PIN_L_IN_3  8
+#define PIN_L_IN_4  9
+#define PIN_R_IN_1  2
+#define PIN_R_IN_2  3
+#define PIN_R_IN_3  4
+#define PIN_R_IN_4  5
 
 enum MassageMode : uint8_t {
   MODE_OFF   = 0,
