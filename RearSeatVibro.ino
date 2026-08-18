@@ -207,7 +207,7 @@ SeatMassage seatR(PIN_R_IN_1, PIN_R_IN_2, PIN_R_IN_3, PIN_R_IN_4);
 byte L_Mode=0;
 byte R_Mode=0;
 
-byte modeSeq[]={0, 1, 2, 3};
+byte modeSeq[]={0, 3, 2, 1};
 
 void setup() {
   Serial.println("Started");
