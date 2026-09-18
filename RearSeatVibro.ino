@@ -218,6 +218,8 @@ void setup() {
   slave.onCommand(REG_PING, cmdPing);
   slave.onCommand(REG_L_MODE, cmdMode);
   slave.onCommand(REG_R_MODE, cmdMode);
+  slave.onCommand(REG_L_SET_MODE, cmdSetMode);
+  slave.onCommand(REG_R_SET_MODE, cmdSetMode);
   slave.onCommand(REG_L_GetStatus, cmdGetStatus);
   slave.onCommand(REG_R_GetStatus, cmdGetStatus);
   slave.begin();
@@ -272,6 +274,21 @@ void ClickHardware(int seatNum){
   }
 }
 
+void SetHardware(uint8_t seatNum, uint8_t mode){
+  if(seatNum==0)
+  {
+    L_Mode=mode;
+    logB("Seat #0", L_Mode);
+    seatL.mode=L_Mode;
+  }
+  else if(seatNum==1)
+  {
+    R_Mode=mode;
+    logB("Seat #1", R_Mode);
+    seatR.mode=R_Mode;
+  }
+}
+
 //Возвращает номер следующего режима.
 byte GetNextMode(byte mode){
   int i=0;
@@ -314,6 +331,22 @@ void cmdMode(const uint8_t* buf, uint8_t len) {
   Serial.println(seat);
   if (seat > 1) { slave.respondByte(0x00); return; }
   ClickHardware(seat);
+  uint8_t ind=GetIndicator(seat);
+  uint8_t resp[2] = {1, ind};
+  slave.respond(resp, sizeof(resp));
+}
+
+void cmdSetMode(const uint8_t* buf, uint8_t len) {
+  Serial.print("cmdSetMode ");
+  if (len < 2) { slave.respondByte(0x00); return; }
+  uint8_t seat = 2;
+  if(buf[0]==REG_L_SET_MODE)
+    seat=0;
+  if(buf[0]==REG_R_SET_MODE)
+    seat=1;
+  Serial.println(seat);
+  if (seat > 1) { slave.respondByte(0x00); return; }
+  SetHardware(seat, buf[1]);
   uint8_t ind=GetIndicator(seat);
   uint8_t resp[2] = {1, ind};
   slave.respond(resp, sizeof(resp));
