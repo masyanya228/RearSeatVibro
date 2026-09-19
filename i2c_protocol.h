@@ -9,6 +9,7 @@
 #define REG_PING 0x08
 #define REG_L_SET_MODE 0x14
 #define REG_R_SET_MODE 0x15
+#define REG_PingWithStatus 0x16
 
 // Статусные байты (первый байт любого ответа)
 #define STATUS_BUSY          0xFF  // слейв ещё не готов

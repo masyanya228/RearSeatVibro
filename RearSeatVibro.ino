@@ -218,6 +218,7 @@ void setup() {
   slave.onCommand(REG_R_SET_MODE, cmdSetMode);
   slave.onCommand(REG_L_GetStatus, cmdGetStatus);
   slave.onCommand(REG_R_GetStatus, cmdGetStatus);
+  slave.onCommand(REG_PingWithStatus, cmdPingWithStatus);
   slave.begin();
 }
 
@@ -339,4 +340,11 @@ void cmdGetStatus(const uint8_t* buf, uint8_t len){
 
 void cmdPing(const uint8_t*, uint8_t){
   slave.respondByte(0x01);
+}
+
+void cmdPingWithStatus(const uint8_t* buf, uint8_t len){
+  uint8_t l_ind=GetIndicator(0);
+  uint8_t r_ind=GetIndicator(1);
+  uint8_t resp[3] = {1, l_ind, r_ind};
+  slave.respond(resp, sizeof(resp));
 }
