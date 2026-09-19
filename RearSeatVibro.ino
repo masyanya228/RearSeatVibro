@@ -203,10 +203,6 @@ private:
 // ============================================================
 SeatMassage seatL(PIN_L_IN_1, PIN_L_IN_2, PIN_L_IN_3, PIN_L_IN_4);
 SeatMassage seatR(PIN_R_IN_1, PIN_R_IN_2, PIN_R_IN_3, PIN_R_IN_4);
-
-byte L_Mode=0;
-byte R_Mode=0;
-
 byte modeSeq[]={0, 3, 2, 1};
 
 void setup() {
@@ -244,10 +240,10 @@ void loop() {
 
     if (command == "mode0") {
       ClickHardware(0);
-      Serial.println(L_Mode);
+      Serial.println(seatL.mode);
     } else if (command == "mode1") {
       ClickHardware(1);
-      Serial.println(R_Mode);
+      Serial.println(seatR.mode);
     } else if (command == "test") {
       isTest = !isTest;
       Serial.println(isTest ? "Тест включён" : "Тест выключен");
@@ -289,9 +285,9 @@ uint8_t GetNextMode(uint8_t mode){
 
 uint8_t GetIndicator(uint8_t seatNum){
   if(seatNum==0)
-    return L_Mode;
+    return seatL.mode;
   else if(seatNum==1)
-    return R_Mode;
+    return seatR.mode;
   else
     return 0;
 }
@@ -308,7 +304,7 @@ void cmdMode(const uint8_t* buf, uint8_t len){
   ClickHardware(seat);
   uint8_t ind = GetIndicator(seat);
   uint8_t resp[2] = {1, ind};
-  Serial.printf("Mode seat: %02x | fact: %02X\n", seat, ind);
+  //Serial.printf("Mode seat: %02x | fact: %02X\n", seat, ind);
   slave.respond(resp, sizeof(resp));
 }
 
@@ -323,7 +319,7 @@ void cmdSetMode(const uint8_t* buf, uint8_t len){
   SetHardware(seat, buf[1]);
   uint8_t ind = GetIndicator(seat);
   uint8_t resp[2] = {1, ind};
-  Serial.printf("SetMode seat: %02x | target: %02x | fact: %02X\n", seat, buf[1], ind);
+  //Serial.printf("SetMode seat: %02x | target: %02x | fact: %02X\n", seat, buf[1], ind);
   slave.respond(resp, sizeof(resp));
 }
 
@@ -337,7 +333,7 @@ void cmdGetStatus(const uint8_t* buf, uint8_t len){
   else{ slave.respondByte(0x00); return; }
   uint8_t ind=GetIndicator(seat);
   uint8_t resp[2] = {1, ind};
-  Serial.printf("GetStatus seat: %02x | fact: %02X\n", seat, ind);
+  //Serial.printf("GetStatus seat: %02x | fact: %02X\n", seat, ind);
   slave.respond(resp, sizeof(resp));
 }
 
