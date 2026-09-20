@@ -249,7 +249,7 @@ void loop() {
       isTest = !isTest;
       Serial.println(isTest ? "Тест включён" : "Тест выключен");
     } else {
-      Serial.println("Команды: mode0 | mode1 | test | eeprom init | eeprom read");
+      Serial.println("Команды: mode0 | mode1 | test");
     }
   }
   delay(50);
